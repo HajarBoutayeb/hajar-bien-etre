@@ -277,6 +277,42 @@ setTimeout(function(){if(!window.FBBoot){var a=document.getElementById("auth");i
         });
         out.months[mo]=mm;
       });
+      /* Dedupe by name: the mini-app can seed the same 14 defaults with
+         different ids on another device, and a plain union by id would keep
+         both copies forever. Keep one copy per name (the one with the most
+         checked days) and union all copies' days into it. */
+      var byName={};
+      out.habits.forEach(function(h){
+        (byName[h.name]=byName[h.name]||[]).push(h);
+      });
+      var keepIds={}, kept=[];
+      Object.keys(byName).forEach(function(name){
+        var copies=byName[name];
+        var best=copies[0], bestN=-1;
+        copies.forEach(function(h){
+          var n=0;
+          Object.keys(out.months).forEach(function(mo){
+            n+=((out.months[mo].c||{})[h.id]||[]).length;
+          });
+          if(n>bestN){ bestN=n; best=h; }
+        });
+        keepIds[best.id]=1; kept.push(best);
+        Object.keys(out.months).forEach(function(mo){
+          ["c","o"].forEach(function(kind){
+            var acc={};
+            copies.forEach(function(h){
+              ((out.months[mo][kind]||{})[h.id]||[]).forEach(function(d){ acc[d]=1; });
+            });
+            var days=Object.keys(acc).map(Number).sort(function(a,b){return a-b;});
+            if(!out.months[mo][kind]) out.months[mo][kind]={};
+            if(days.length) out.months[mo][kind][best.id]=days;
+            copies.forEach(function(h){
+              if(h.id!==best.id) delete out.months[mo][kind][h.id];
+            });
+          });
+        });
+      });
+      out.habits=kept;
       out.mood={};
       var md1=cloud.mood||{}, md2=local.mood||{};
       Object.keys(md1).concat(Object.keys(md2)).forEach(function(dt){
@@ -289,7 +325,10 @@ setTimeout(function(){if(!window.FBBoot){var a=document.getElementById("auth");i
     }
     if(docId==="expenses"){
       out={};
-      out.tx=mergeById(cloud.tx, local.tx, function(t){return t.id;});
+      /* An emptied cloud list wins: otherwise the old local transactions
+         would be merged back in on every sign-in and could never be cleared. */
+      if(cloud.tx && cloud.tx.length===0) out.tx=[];
+      else out.tx=mergeById(cloud.tx, local.tx, function(t){return t.id;});
       out.cats=mergeById(cloud.cats, local.cats, function(c){return c.n;});
       out.nid=Math.max(cloud.nid||0, local.nid||0);
       out.theme=(cloud.theme!==null&&cloud.theme!==undefined)?cloud.theme:local.theme;
