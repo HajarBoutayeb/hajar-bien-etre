@@ -19,7 +19,7 @@
 
 ## Utilisation
 
-1. Ouvrir l'application : https://hajarboutayeb.github.io/tatbiqati/
+1. Ouvrir l'application : https://hajarboutayeb.github.io/hajar-bien-etre/
 2. Créer un compte (e-mail + mot de passe) ou se connecter
 3. Les données se synchronisent automatiquement entre tous les appareils avec le même compte
 
