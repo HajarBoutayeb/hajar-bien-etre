@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>تطبيقاتي</title>
+<title>Hajar</title>
+<link rel="icon" type="image/png" href="icon-512.png">
 <style>
 :root{--fb:#f3f6f4;--cb:#fff;--ct:#0f172a;color-scheme:light dark}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fb:#0e1210;--cb:#1e293b;--ct:#e2e8f0}}
@@ -76,7 +77,7 @@ iframe.off{display:none}
 <div id="minis"></div>
 </div>
 <div id="auth" class="on"><div class="auth-card">
-<h1>تطبيقاتي</h1>
+<h1>Hajar</h1>
 <p class="auth-sub">سجّلي الدخول باش تتزامن معلوماتك بين التيليفون والكمبيوتر.<br><span class="auth-sub-fr">Connectez-vous pour synchroniser vos données entre le téléphone et l'ordinateur.</span></p>
 <label class="auth-lb">البريد الإلكتروني
 <input id="auth-email" type="email" dir="ltr" placeholder="exemple@gmail.com" autocomplete="email">
@@ -166,7 +167,7 @@ show(start,true);
 setTimeout(function(){if(!window.FBBoot){var a=document.getElementById("auth");if(a)a.classList.remove("on");ORDER.forEach(function(n){if(!frames[n].srcdoc)frames[n].srcdoc=DOCS[n]})}},2000);
 </script>
 <script>
-/* Firebase sync for "تطبيقاتي" — auth gate + Firestore mirror of localStorage.
+/* Firebase sync for "Hajar" — auth gate + Firestore mirror of localStorage.
    Project: tatbiqati-51aab (Spark plan). Data lives under users/{uid}/apps/*,
    one Firestore document per localStorage key. localStorage stays as offline cache. */
 (function(){
